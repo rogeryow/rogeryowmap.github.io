@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body>
+	<div>
+		<input type="input" id="search" name="search">
+	</div>
+	<div id="map">
+		
+	</div>
+	<script type="text/javascript">
+	function createMap() {
+		var map, infoWindow
+		var options = {
+			zoom: 15,
+			center: {lat: 6.754657, lng: 125.355698},
+		}
+
+		map = new google.maps.Map(document.getElementById('map'), options)
+ 		
+ 		var input = document.getElementById('search')
+ 		var searchBox = google.maps.places.SearchBox(input)
+
+ 		map.addListener('bounds_change', function() {
+ 			searchBox.setBounds(map.getBounds())
+ 		})
+
+ 		var markers = []
+ 		searchBox.addListener('places_changed', function() {
+ 			var places = searchBox.getPlaces()
+
+ 			if(places.length === 0)
+ 				return
+
+ 			markers.forEach(function(m) {m.setMap(null)})
+ 			markers = []
+
+ 			var bounds = new google.maps.LatLngBounds()
+
+ 			places.forEach(function(p) {
+ 				if(!p.geometry)
+ 					return
+
+ 				markers.push(new google.map.Markers({
+ 					map: map,
+ 					title: p.name,
+ 					place: p.geometry.location
+ 				}))
+
+ 				if(p.geometry.viewport)
+ 					bounds.union(p.geometry)
+ 			})
+ 		}) 
+	}
+
+	window.addEventListener('load', function() {
+		createMap()
+	})
+	</script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?keys=AIzaSyCc7aSooOqywLNVECZRuY0AS0b239f1qj8&callback=createMap&libraries=places"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+body {
+	margin: 0;
+}
+#map {
+	width: 100vh;
+	height: 100vh;
+	border: 1px solid #f1f1f1;
+	display: inline-block;
+	margin: 0 auto;
+}
